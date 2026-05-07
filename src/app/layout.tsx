@@ -33,6 +33,16 @@ export const metadata: Metadata = {
   authors: [{ name: personalInfo.name, url: siteUrl }],
   creator: personalInfo.name,
   publisher: personalInfo.name,
+  icons: {
+    icon: [
+      {
+        url: "/images/favicon.png",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/images/favicon.png",
+    apple: "/images/favicon.png",
+  },
   alternates: {
     canonical: "/",
   },
