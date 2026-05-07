@@ -160,7 +160,7 @@ export default function Projects() {
                         )}
                       </button>
                       <Link
-                        href={`/projects#${project.slug}`}
+                        href={`/projects/${project.slug}`}
                         className="flex items-center gap-2 text-sm text-slate-300 hover:text-white font-semibold transition-colors"
                       >
                         <ExternalLink className="w-4 h-4" />

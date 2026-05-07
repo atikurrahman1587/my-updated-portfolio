@@ -1,14 +1,50 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, Layers, Sparkles, Tag, Trophy } from "lucide-react";
+import { ArrowLeft, Layers, Tag } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { projects } from "../../data/portfolio";
 
+const projectCategories = [...new Set(projects.map((project) => project.category))];
+const projectTypes = [...new Set(projects.map((project) => project.type))];
+const projectTechStack = [...new Set(projects.flatMap((project) => project.techStack))];
+
 export const metadata: Metadata = {
-  title: "Projects | Atikur.dev",
+  title: "Projects",
   description: "Selected full-stack, government, SaaS, fintech, messaging, EdTech, and marketplace projects by Md. Atikur Rahman.",
+  keywords: [
+    "Atikur Rahman projects",
+    "Full stack projects",
+    "Laravel projects",
+    "Next.js projects",
+    "SaaS portfolio",
+    ...projectCategories,
+    ...projectTypes,
+    ...projectTechStack,
+    ...projects.map((project) => project.title),
+  ],
+  alternates: {
+    canonical: "/projects",
+  },
+  openGraph: {
+    type: "website",
+    url: "/projects",
+    title: "Projects | Atikur.dev",
+    description:
+      "Selected production-ready government, SaaS, fintech, messaging, EdTech, marketplace, and content platforms by Md. Atikur Rahman.",
+    images: projects.slice(0, 4).map((project) => ({
+      url: project.image,
+      alt: project.title,
+    })),
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Projects | Atikur.dev",
+    description:
+      "Explore full-stack Laravel, Next.js, SaaS, civic tech, fintech, messaging, and marketplace projects.",
+    images: [projects[0].image],
+  },
 };
 
 const categoryColors: Record<string, string> = {
@@ -129,10 +165,13 @@ export default function ProjectPage() {
                       </span>
                     </div>
                     <div className="absolute bottom-5 left-5 right-5">
-                      <div className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-neutral-950/55 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-200 backdrop-blur-md">
+                      <Link
+                        href={`/projects/${project.slug}`}
+                        className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-neutral-950/55 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-200 backdrop-blur-md transition-colors hover:border-violet-400/50 hover:text-white"
+                      >
                         <span className="text-violet-300">{String(index + 1).padStart(2, "0")}</span>
-                        Featured Work
-                      </div>
+                        View Case Study
+                      </Link>
                     </div>
                   </div>
 
@@ -144,53 +183,29 @@ export default function ProjectPage() {
                     <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight">{project.title}</h2>
                     <p className="text-violet-300 font-semibold mt-2">{project.tagline}</p>
                     <p className="text-slate-300 leading-relaxed mt-5">{project.overview}</p>
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="btn-outline mt-6 w-fit px-4 py-2 text-sm"
+                    >
+                      View Details
+                    </Link>
 
-                    <div className="grid md:grid-cols-2 gap-8 mt-8">
-                      <div className="border-l border-violet-400/30 pl-5">
-                        <h3 className="flex items-center gap-2 text-white font-bold mb-3">
-                          <Sparkles className="w-5 h-5 text-violet-300" />
-                          Key Features
-                        </h3>
-                        <div className="space-y-2.5">
-                          {project.features.slice(0, 8).map((feature) => (
-                            <div key={feature} className="flex items-start gap-3">
-                              <CheckCircle2 className="w-4 h-4 text-emerald-300 mt-0.5 flex-shrink-0" />
-                              <span className="text-sm text-slate-300 leading-relaxed">{feature}</span>
-                            </div>
-                          ))}
-                        </div>
+                    <div className="mt-8 border-l border-amber-300/30 pl-5">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Tag className="w-4 h-4 text-slate-500" />
+                        <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold">
+                          Tech Stack
+                        </span>
                       </div>
-
-                      <div className="border-l border-amber-300/30 pl-5">
-                        <h3 className="flex items-center gap-2 text-white font-bold mb-3">
-                          <Trophy className="w-5 h-5 text-amber-300" />
-                          Highlights
-                        </h3>
-                        <div className="space-y-2.5 mb-6">
-                          {project.outcomes.map((outcome) => (
-                            <div key={outcome} className="flex items-start gap-3">
-                              <span className="w-1.5 h-1.5 rounded-full bg-violet-300 mt-2 flex-shrink-0" />
-                              <span className="text-sm text-slate-300 leading-relaxed">{outcome}</span>
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className="flex items-center gap-2 mb-3">
-                          <Tag className="w-4 h-4 text-slate-500" />
-                          <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold">
-                            Tech Stack
+                      <div className="flex flex-wrap gap-2">
+                        {project.techStack.map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-2.5 py-1 text-xs rounded-lg border border-white/[0.08] bg-white/[0.04] text-slate-300 font-medium transition-colors duration-200 hover:border-violet-400/40 hover:text-violet-200"
+                          >
+                            {tech}
                           </span>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {project.techStack.map((tech) => (
-                            <span
-                              key={tech}
-                              className="px-2.5 py-1 text-xs rounded-lg border border-white/[0.08] bg-white/[0.04] text-slate-300 font-medium transition-colors duration-200 hover:border-violet-400/40 hover:text-violet-200"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
+                        ))}
                       </div>
                     </div>
                   </div>

@@ -6,6 +6,13 @@ const lastModified = new Date();
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const projectImages = projects.map((project) => `${siteUrl}${project.image}`);
+  const projectPages = projects.map((project) => ({
+    url: `${siteUrl}/projects/${project.slug}`,
+    lastModified,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+    images: [`${siteUrl}${project.image}`],
+  }));
 
   return [
     {
@@ -21,5 +28,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       images: projectImages,
     },
+    ...projectPages,
   ];
 }
